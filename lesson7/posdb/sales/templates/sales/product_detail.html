@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} — ព័ត៌មានលម្អិត</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border-left: 4px solid #2b6cb0;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #1a202c;
+            font-size: 2em;
+        }
+
+        .header p {
+            margin: 8px 0 0 0;
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .nav {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav a {
+            color: #2b6cb0;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover {
+            background: #ebf8ff;
+            color: #2c5282;
+        }
+
+        .detail-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            border-top: 5px solid #2b6cb0;
+        }
+
+        .header-section {
+            padding: 30px;
+            border-bottom: 1px solid #edf2f7;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .product-image-large {
+            width: 100%;
+            max-width: 300px;
+            height: 300px;
+            background: #f8fafc;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .product-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .no-image-large {
+            color: #a0aec0;
+            font-size: 5em;
+        }
+
+        .header-main {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .header-main p {
+            color: #718096;
+            margin-top: 5px;
+            font-size: 1em;
+        }
+
+        .status-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .status-instock {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-lowstock {
+            background: #feebc8;
+            color: #744210;
+        }
+
+        .status-outofstock {
+            background: #fed7d7;
+            color: #822727;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1px;
+            background: #edf2f7;
+        }
+
+        .info-item {
+            background: white;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label {
+            font-size: 0.85em;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .value {
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .price-value {
+            color: #2f855a;
+            font-size: 1.8em;
+        }
+
+        .category-value {
+            color: #2b6cb0;
+        }
+
+        .footer-actions {
+            padding: 20px 30px;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #edf2f7;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .btn {
+            background: #2b6cb0;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 500;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #2c5282;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-secondary {
+            background: #718096;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5568;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header-section {
+                padding: 20px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .product-image-large {
+                max-width: 250px;
+                height: 250px;
+            }
+
+            .header-main h1 {
+                font-size: 1.5em;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-actions {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 {{ product.name }}</h1>
+            <p>Product Details & Information</p>
+        </div>
+
+        <div class="nav">
+            <a href="/sales/products_list/">📦 ផលិតផល</a>
+            <a href="/sales/orders/">🧾 ការបញ្ជាទិញ</a>
+            <a href="/admin/">⚙️ Admin</a>
+        </div>
+
+        <div class="detail-container">
+            <div class="header-section">
+                <div class="product-image-large">
+                    {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="no-image-large">📷</div>
+                    {% endif %}
+                </div>
+
+                <div class="header-main">
+                    <h1>{{ product.name }}</h1>
+                    <p>លេខបារកូដ: {{ product.barcode|default:"---" }}</p>
+                </div>
+
+                {% if product.stock > 5 %}
+                <span class="status-pill status-instock">✅ មានក្នុងស្តុក</span>
+                {% elif product.stock > 0 %}
+                <span class="status-pill status-lowstock">⚠️ ស្តុកតិច</span>
+                {% else %}
+                <span class="status-pill status-outofstock">❌ អស់ពីស្តុក</span>
+                {% endif %}
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">ប្រភេទ (Category)</span>
+                    <span class="value category-value">{{ product.get_category_display }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">តម្លៃ (Price)</span>
+                    <span class="value price-value">${{ product.price }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">ចំនួនក្នុងស្តុក (Current Stock)</span>
+                    <span class="value">{{ product.stock }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">ថ្ងៃបញ្ចូល (Date Added)</span>
+                    <span class="value" style="font-size: 1em;">{{ product.created_at|date:"d M, Y" }}</span>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <a href="/sales/products_list/" class="btn btn-secondary">← ត្រឡប់ទៅបញ្ជីវិញ</a>
+                <a href="/admin/sales/product/{{ product.pk }}/change/" class="btn">កែប្រែព័ត៌មាន (Edit)</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

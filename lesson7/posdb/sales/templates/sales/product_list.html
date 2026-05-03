@@ -1,0 +1,392 @@
+<!-- sales/templates/sales/product_list.html -->
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 POS — បញ្ជីផលិតផល</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border-left: 4px solid #2b6cb0;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #1a202c;
+            font-size: 2em;
+        }
+
+        .header p {
+            margin: 8px 0 0 0;
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .nav {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav a {
+            color: #2b6cb0;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover {
+            background: #ebf8ff;
+            color: #2c5282;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #1a202c;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #2b6cb0;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            background: #f8fafc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            border: 2px solid #e2e8f0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .no-image {
+            color: #a0aec0;
+            font-size: 3em;
+        }
+
+        .product-header {
+            margin-bottom: 16px;
+        }
+
+        .product-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0 0 8px 0;
+            text-decoration: none;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        .product-title:hover {
+            color: #2b6cb0;
+        }
+
+        .product-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+            background: #ebf8ff;
+            color: #2b6cb0;
+        }
+
+        .barcode {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .product-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .price-section {
+            text-align: right;
+        }
+
+        .price {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #276749;
+            margin-bottom: 8px;
+        }
+
+        .stock-info {
+            font-size: 0.9em;
+            color: #718096;
+        }
+
+        .stock-low {
+            color: #c53030;
+            font-weight: bold;
+        }
+
+        .stock-warning {
+            color: #dd6b20;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #a0aec0;
+            font-style: italic;
+            padding: 80px 20px;
+            font-size: 1.1em;
+        }
+
+        .empty-state a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .empty-state a:hover {
+            text-decoration: underline;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .product-card {
+                padding: 16px;
+            }
+
+            .product-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .price-section {
+                text-align: left;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🛒 បញ្ជីផលិតផល</h1>
+            <p>Product Inventory Management</p>
+            <p style="margin: 8px 0 0 0; color: #4a5568; font-size: 0.95em;">
+                {% if user.is_authenticated %}
+                ស្វាគមន៍, <strong>{{ user.username }}</strong>
+                {% else %}
+                សូមចូលគណនីសិន ដើម្បីមើលទិន្នន័យពេញលេញ
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="nav">
+            <a href="/sales/products_list/">📦 ផលិតផល</a>
+            <a href="/sales/orders/">🧾 ការបញ្ជាទិញ</a>
+            <a href="/admin/">⚙️ Admin</a>
+        </div>
+
+        <div class="content-section">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">{{ products|length }}</div>
+                    <div class="stat-label">Active Products</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ products|length|add:"0" }}</div>
+                    <div class="stat-label">In Stock</div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 class="section-title" style="margin-bottom: 0;">📋 Product Catalog</h2>
+                <a href="/sales/orders/new/"
+                    style="background: linear-gradient(135deg, #2b6cb0 0%, #1e4e89 100%); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: all 0.2s; white-space: nowrap;">➕
+                    New Order</a>
+            </div>
+
+            {% if products %}
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <div class="product-image">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                        <div class="no-image">📷</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="product-header">
+                        <a href="/sales/products/{{ product.pk }}/" class="product-title">{{ product.name }}</a>
+                        <div class="product-meta">
+                            <span class="badge">{{ product.get_category_display }}</span>
+                            {% if product.barcode %}
+                            <span class="barcode">Barcode: {{ product.barcode }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="product-details">
+                        <div class="price-section">
+                            <div class="price">${{ product.price }}</div>
+                            {% if product.stock <= 0 %} <div class="stock-info stock-low">⚠️ Out of Stock
+                        </div>
+                        {% elif product.stock <= 5 %} <div class="stock-info stock-warning">⚠️ Low Stock: {{
+                            product.stock }} left
+                    </div>
+                    {% else %}
+                    <div class="stock-info">✅ In Stock: {{ product.stock }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        មិនទាន់មានផលិតផលទេ<br>
+        <small>Add products through the <a href="/admin/">admin panel</a> to get started!</small>
+    </div>
+    {% endif %}
+    </div>
+    </div>
+</body>
+
+</html>
