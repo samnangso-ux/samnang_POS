@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^kv-xa+b#1)k)boq(&9n*$dpmn2@7=fu)j70d-ecbzb&ibo@73
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['NangB204.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -125,6 +125,13 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL  = '/sales/products_list/'   # after login → product catalogue
 LOGOUT_REDIRECT_URL = '/accounts/login/'   # after logout → back to login page
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://NangB204.pythonanywhere.com',
+    'https://NangB204.pythonanywhere.com',
+]
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 # With these settings + the root RedirectView, the full navigation cycle is:
 #   /  →  /accounts/login/  →  (log in)  →  /sales/products/
 #   (log out)  →  /accounts/login/
