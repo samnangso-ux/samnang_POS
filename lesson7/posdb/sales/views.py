@@ -52,6 +52,37 @@ def add_item(request, pk):
             if not order.items.exists():
                 messages.error(request, "Cannot checkout with an empty order. Add items first.")
                 return redirect('add_item', pk=order.pk)
+
+            voucher_code = request.POST.get('voucher_code', '').strip().upper()
+            if voucher_code:
+                voucher_map = {
+                    'SAVE10': {'type': 'percent', 'amount': Decimal('10.00'), 'description': 'Voucher SAVE10 (10% off)'},
+                    'VIP20': {'type': 'percent', 'amount': Decimal('20.00'), 'description': 'Voucher VIP20 (20% off)'},
+                    'OFF5':  {'type': 'fixed',   'amount': Decimal('5.00'),  'description': 'Voucher OFF5 ($5 off)'},
+                    'NEWUSER': {'type': 'fixed', 'amount': Decimal('1.00'),  'description': 'Voucher NEWUSER ($1 off)'},
+                }
+                if voucher_code not in voucher_map:
+                    messages.error(request, "Invalid voucher code.")
+                    return redirect('add_item', pk=order.pk)
+
+                if order.discount:
+                    order.discount.delete()
+
+                voucher = voucher_map[voucher_code]
+                if voucher['type'] == 'percent':
+                    discount_amount = subtotal * (voucher['amount'] / Decimal('100'))
+                else:
+                    discount_amount = voucher['amount']
+
+                if discount_amount > subtotal:
+                    discount_amount = subtotal
+
+                Discount.objects.create(
+                    order=order,
+                    description=voucher['description'],
+                    amount=discount_amount
+                )
+                messages.success(request, f"✓ Applied voucher {voucher_code}: -${discount_amount:.2f}")
             
             # Mark order as paid immediately
             order.status = 'paid'
@@ -82,8 +113,6 @@ def add_item(request, pk):
         'item_form': item_form,
         'items':     order.items.select_related('product'),
     })
-
-
 #@login_required
 def checkout(request, pk):
     """
