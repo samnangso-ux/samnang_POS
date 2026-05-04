@@ -216,20 +216,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧾 ការបញ្ជាទិញលក់</h1>
+            <h1>🧾 Order</h1>
             <p>Order Management System</p>
             <p style="margin: 8px 0 0 0; color: #4a5568; font-size: 0.95em;">
-            {% if user.is_authenticated %}
-            ស្វាគមន៍, <strong>{{ user.username }}</strong>
-            {% else %}
-            សូមចូលគណនីសិន ដើម្បីមើលទិន្នន័យពេញលេញ
-            {% endif %}
+                {% if user.is_authenticated %}
+                ស្វាគមន៍, <strong>{{ user.username }}</strong> | <a href="/accounts/login/" style="color: #2b6cb0; text-decoration: none; font-weight: 500;">🚪 Logout</a>
+                {% else %}
+                សូមចូលគណនីសិន ដើម្បីមើលទិន្នន័យពេញលេញ
+                {% endif %}
             </p>
         </div>
 
         <div class="nav">
-            <a href="/sales/products_list/">📦 ផលិតផល</a>
-            <a href="/sales/orders/">🧾 ការបញ្ជាទិញ</a>
+            <a href="/sales/products_list/">Product</a>
+            <a href="/sales/orders/">Order</a>
             <a href="/admin/">⚙️ Admin</a>
         </div>
 
@@ -256,11 +256,11 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>អ្នកគិតលុយ</th>
-                        <th>កាលបរិច្ឆេទ</th>
-                        <th>ស្ថានភាព</th>
-                        <th>សរុប</th>
-                        <th>ផ្នែក</th>
+                        <th>Cashier</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Subtotal</th>
+                        <th>Position</th>
                     </tr>
                 </thead>
                 <tbody>
